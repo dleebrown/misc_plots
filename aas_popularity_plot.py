@@ -24,7 +24,7 @@ dummy_yval = [0, 0, 0, 0, 0, 0, 0, 0]
 plt.xticks(num_xvals, x_vals)
 plt.scatter(num_xvals, dummy_yval, color='White')
 
-plt.bar(ads_series, ads_pop, color='DarkCyan', width=5.5, alpha=1.0, zorder=2, label='Refereed Articles Indexed by ADS with "Machine Learning" in Abstract')
+plt.bar(ads_series, ads_pop, color='DarkCyan', width=5.5, alpha=1.0, zorder=2, label='New Refereed Articles on ADS with "Machine Learning" in Abstract')
 plt.plot(google_series, google_pop, color='FireBrick', linewidth=8.0, alpha=1.0, zorder=4)
 #plt.plot(google_series, google_pop, color='White', linewidth=15.0, alpha=1.0, zorder=3)
 
