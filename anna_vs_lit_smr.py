@@ -28,8 +28,17 @@ cat_temp = a_vs_cat[:, 5]
 anna_temp_h = a_vs_hyp_t[:, 1]
 hyp_temp = a_vs_hyp_t[:, 5]
 
+plt.plot([4000, 9000], [4000, 9000], linewidth=3.0, linestyle='--', color='DarkCyan')
 plt.scatter(anna_temp, cat_temp, c=cat_color, s=cat_size, linewidths=cat_linesize, edgecolors=cat_linecolor, label='Phot only')
 plt.scatter(anna_temp_h, hyp_temp, c=hyp_color, s=hyp_size, linewidths=hyp_linesize, edgecolors=hyp_linecolor, label='Hypatia')
+
+dev_temp_phot = anna_temp - cat_temp
+print('median temp dev anna cat: '+str(np.median(dev_temp_phot)))
+print('n_stars_cat temp: '+str(np.size(dev_temp_phot)))
+
+dev_temp = anna_temp_h - hyp_temp
+print('median temp dev anna hyp: '+str(np.median(dev_temp)))
+print('n_stars_hyp temp: '+str(np.size(dev_temp)))
 
 plt.xlabel('ANNA Temp (K)', fontsize=16)
 plt.ylabel('Ref Temp (K)', fontsize=16)
@@ -48,8 +57,17 @@ cat_met = a_vs_cat[:, 6]
 anna_temp_m = a_vs_hyp_m[:, 3]
 hyp_met = a_vs_hyp_m[:, 5]
 
+plt.plot([-0.8, 0.9], [-0.8, 0.9], linewidth=3.0, linestyle='--', color='DarkCyan')
 plt.scatter(anna_met, cat_met, c=cat_color, s=cat_size, linewidths=cat_linesize, edgecolors=cat_linecolor, label='Phot only')
 plt.scatter(anna_temp_m, hyp_met, c=hyp_color, s=hyp_size, linewidths=hyp_linesize, edgecolors=hyp_linecolor, label='Hypatia')
+
+dev_met_phot = anna_met - cat_met
+print('median [fe/h] dev anna cat: '+str(np.median(dev_met_phot)))
+print('n_stars [fe/h] cat: '+str(np.size(dev_met_phot)))
+
+dev_met = anna_temp_m - hyp_met
+print('median [fe/h] dev anna hyp: '+str(np.median(dev_met)))
+print('n_stars [fe/h] hyp: '+str(np.size(dev_met)))
 
 plt.xlabel('ANNA [Fe/H] (dex)', fontsize=16)
 plt.ylabel('Ref [Fe/H] (dex)', fontsize=16)
