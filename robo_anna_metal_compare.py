@@ -36,6 +36,10 @@ roboanna = plt.subplot(gs[0])
 roboanna.plot([-0.4, 0.8], [-0.4, 0.8], linewidth=3.0, linestyle='--', color='IndianRed', zorder=0)
 roboanna.scatter(anna_met, robo_met, marker='o', s=60, linewidth=1.9, edgecolor='RoyalBlue', facecolor='White', zorder=2)
 
+dev_met = anna_met - robo_met
+print('median [fe/h] dev anna robo: '+str(np.median(dev_met)))
+print('n stars dev anna robo: '+str(np.size(dev_met)))
+
 plt.ylabel('EW [Fe/H] (dex)', fontsize=14)
 plt.tick_params(axis='both', top='off', right='off', bottom='off', labeltop='off', labelright='off', labelbottom='off')
 plt.tick_params(axis='both', which='major', labelsize=12)
