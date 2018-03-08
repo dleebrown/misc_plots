@@ -10,9 +10,18 @@ directory = '/home/donald/Desktop/PYTHON/misc_data/'
 
 input_data = '/home/donald/Desktop/PYTHON/misc_data/confirmed_SMR_Li.csv'
 
-data = np.genfromtxt(input_data, delimiter=',', skip_header=1)
+# read in the lopez-valdivia+2015 smr data and li measures
+lv_input = '/home/donald/Desktop/PYTHON/misc_data/LopezValdivia2015_data.csv'
 
-print(data)
+data = np.genfromtxt(input_data, delimiter=',', skip_header=1)
+lv_data = np.genfromtxt(lv_input, delimiter=',', skip_header=1)
+
+lv_temp = lv_data[:, 1]
+lv_li = lv_data[:, 7]
+lv_grav = lv_data[:, 3]
+lv_met = lv_data[:, 5]
+
+#print(data)
 # grab the data I need
 data_array = np.zeros((np.size(data[:, 2]), 4))
 data_array[:, 0] = data[:, 2]
@@ -39,51 +48,67 @@ for i in range(num_bins):
             binned_data[i, 1] = binned_data[i, 1]+1
     counter += 1
 
-print(binned_data)
+#print(binned_data)
 # first make a distribution of Li measurements color coded by their population - this is actually a bar chart
 # using the manually binned data so I can make fancy looking colors and stuff
 matplotlib.rcParams['hatch.linewidth'] = 4.1
-plt.bar(binned_data[:3, 0], binned_data[:3, 1], 0.85*bin_width, color='RoyalBlue')
+plt.bar(binned_data[:3, 0], binned_data[:3, 1], 0.85*bin_width, color='RoyalBlue', label='A(Li)<1.95')
 plt.bar(binned_data[3, 0], binned_data[3, 1], 0.82*bin_width, color='RoyalBlue', hatch='//', edgecolor='FireBrick')
 plt.bar(binned_data[3, 0], binned_data[3, 1], 0.82*bin_width, color='None', edgecolor='RoyalBlue')
-plt.bar(binned_data[4:, 0], binned_data[4:, 1], 0.85*bin_width, color='FireBrick')
-
+plt.bar(binned_data[4:, 0], binned_data[4:, 1], 0.85*bin_width, color='FireBrick', label='A(Li)>1.95')
 plt.xlabel('A(Li)', fontsize=14)
 plt.ylabel('N Stars', fontsize=14)
 plt.ylim([0, 10])
 plt.xlim([1.29, 3.05])
+plt.legend(loc=2, fontsize=14)
 plt.savefig(directory+'li_distro', format='pdf')
 plt.show()
 
 # now plot the li abundance vs surface temperature by color code
-plt.scatter(data_array[:14, 1], data_array[:14, 0], s=90, color='FireBrick')
-plt.scatter(data_array[14:, 1], data_array[14:, 0], s=90, color='RoyalBlue')
-plt.ylim([1.15, 3.15])
+# first plot the lithium desert from ramirez+2012
+plt.scatter(data_array[14:, 1], data_array[14:, 0], edgecolor='k', linewidth=1.2, s=90, color='RoyalBlue', label='A(Li)>1.95', zorder=2)
+plt.scatter(data_array[:14, 1], data_array[:14, 0], edgecolor='k', linewidth=1.2, s=90, marker='v', color='FireBrick', label='A(Li)<1.95', zorder=3)
+plt.scatter(lv_temp[:-1], lv_li[:-1], s=90, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Lopez-Valdivia+15', zorder=4)
+plt.scatter(lv_temp[-1], lv_li[-1], s=90, color='Gold', marker='v', linewidth=1.2, edgecolor='k', zorder=4)
+plt.plot([6100, 6100, 5975, 5975, 6100], [2.05, 1.6, 1.4, 1.9, 2.05], linewidth=6.0, c='Plum', label='Ramirez+12', zorder=0)
+# add typical error bars
+plt.errorbar(6195, 3.2, xerr=57, yerr=0.15, ecolor='k', capsize=3)
+plt.ylim([1.15, 3.45])
 plt.xlim([5750, 6275])
 plt.xlabel('Temperature (K)', fontsize=14)
 plt.ylabel('A(Li)', fontsize=14)
+plt.legend(loc=2, fontsize=10, frameon=False)
 plt.savefig(directory+'li_vs_temp', format='pdf')
 plt.show()
 
 
 # now plot the li abundance vs metallicity
-plt.scatter(data_array[:14, 2], data_array[:14, 0], s=90, color='FireBrick')
-plt.scatter(data_array[14:, 2], data_array[14:, 0], s=90, color='RoyalBlue')
-plt.ylim([1.15, 3.15])
-plt.xlim([0.1750, 0.42])
+plt.scatter(data_array[14:, 2], data_array[14:, 0], edgecolor='k', linewidth=1.2, s=90, color='RoyalBlue', label='A(Li)>1.95')
+plt.scatter(data_array[:14, 2], data_array[:14, 0], edgecolor='k', linewidth=1.2, s=90, marker='v', color='FireBrick', label='A(Li)<1.95')
+plt.scatter(lv_met[:-1], lv_li[:-1], s=90, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Lopez-Valdivia+2015')
+plt.scatter(lv_met[-1], lv_li[-1], s=90, color='Gold', marker='v', linewidth=1.2, edgecolor='k')
+# typical error
+plt.errorbar(0.343, 3.2, xerr=0.07, yerr=0.15, ecolor='k', capsize=3)
+plt.ylim([1.15, 3.45])
+plt.xlim([0.1750, 0.425])
 plt.xlabel('[Fe/H]', fontsize=14)
 plt.ylabel('A(Li)', fontsize=14)
+plt.legend(loc=2, fontsize=10, frameon=False)
 plt.savefig(directory+'li_vs_metal', format='pdf')
 
 plt.show()
 
 # now vs gravity
-plt.scatter(data_array[:14, 3], data_array[:14, 0], s=90, color='FireBrick')
-plt.scatter(data_array[14:, 3], data_array[14:, 0], s=90, color='RoyalBlue')
-plt.ylim([1.15, 3.15])
+plt.scatter(data_array[14:, 3], data_array[14:, 0], edgecolor='k', linewidth=1.2, s=90, color='RoyalBlue', label='A(Li)>1.95')
+plt.scatter(data_array[:14, 3], data_array[:14, 0], edgecolor='k', linewidth=1.2, s=90, marker='v', color='FireBrick', label='A(Li)<1.95')
+plt.scatter(lv_grav[:-1], lv_li[:-1], s=90, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Lopez-Valdivia+2015')
+plt.scatter(lv_grav[-1], lv_li[-1], s=90, color='Gold', marker='v', linewidth=1.2, edgecolor='k')
+
+plt.ylim([1.15, 3.45])
 plt.xlim([3.9, 4.65])
 plt.xlabel('log(g)', fontsize=14)
 plt.ylabel('A(Li)', fontsize=14)
+plt.legend(loc=2, fontsize=10, frameon=False)
 plt.savefig(directory+'li_vs_grav', format='pdf')
 
 plt.show()
@@ -93,9 +118,13 @@ fig = plt.figure()
 splot = fig.add_subplot(111, projection='3d')
 
 # if i want to do color coded stuff then I need to redo the stuff I did to select data at the beginning
-# and keep temps and metals attached to their Li measurements. 
-splot.scatter(data_array[:14, 1], data_array[:14, 2], data_array[:14, 0], color='FireBrick', s=90)
-splot.scatter(data_array[14:, 1], data_array[14:, 2], data_array[14:, 0], color='RoyalBlue', s=90)
+# and keep temps and metals attached to their Li measurements.
+splot.scatter(data_array[14:, 1], data_array[14:, 2], data_array[14:, 0], linewidth=1.2, edgecolor='k', color='RoyalBlue', s=120)
+splot.scatter(data_array[:14, 1], data_array[:14, 2], data_array[:14, 0], marker='v', linewidth=1.2, edgecolor='k', color='FireBrick', s=120)
+splot.scatter(lv_temp[:-1], lv_met[:-1], lv_li[:-1], s=120, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Lopez-Valdivia+2015')
+splot.scatter(lv_temp[-1], lv_met[-1], lv_li[-1], s=120, color='Gold', marker='v', linewidth=1.2, edgecolor='k')
+
+
 
 splot.set_xlabel('Temperature (K)', fontsize=14)
 splot.set_ylabel('[Fe/H] (dex)', fontsize=14)
