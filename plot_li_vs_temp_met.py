@@ -12,14 +12,29 @@ input_data = '/home/donald/Desktop/PYTHON/misc_data/confirmed_SMR_Li.csv'
 
 # read in the lopez-valdivia+2015 smr data and li measures
 lv_input = '/home/donald/Desktop/PYTHON/misc_data/LopezValdivia2015_data.csv'
+fu_input = '/home/donald/Desktop/PYTHON/misc_data/fu18_data_trim.csv'
+ram_input = '/home/donald/Desktop/PYTHON/misc_data/ramirez12_data_trim.csv'
 
 data = np.genfromtxt(input_data, delimiter=',', skip_header=1)
 lv_data = np.genfromtxt(lv_input, delimiter=',', skip_header=1)
+fu_data = np.genfromtxt(fu_input, delimiter=',', skip_header=1)
+ram_data = np.genfromtxt(ram_input, delimiter=',', skip_header=1)
+
 
 lv_temp = lv_data[:, 1]
 lv_li = lv_data[:, 7]
 lv_grav = lv_data[:, 3]
 lv_met = lv_data[:, 5]
+
+fu_temp = fu_data[:, 12]
+fu_li = fu_data[:, 2]
+fu_grav = fu_data[:, 10]
+fu_met = fu_data[:, 8]
+
+ram_temp = ram_data[:, 1]
+ram_li = ram_data[:, 8]
+ram_grav = ram_data[:, 3]
+ram_met = ram_data[:, 5]
 
 #print(data)
 # grab the data I need
@@ -66,50 +81,79 @@ plt.show()
 
 # now plot the li abundance vs surface temperature by color code
 # first plot the lithium desert from ramirez+2012
-plt.scatter(data_array[14:, 1], data_array[14:, 0], edgecolor='k', linewidth=1.2, s=90, color='RoyalBlue', label='A(Li)>1.95', zorder=2)
-plt.scatter(data_array[:14, 1], data_array[:14, 0], edgecolor='k', linewidth=1.2, s=90, marker='v', color='FireBrick', label='A(Li)<1.95', zorder=3)
-plt.scatter(lv_temp[:-1], lv_li[:-1], s=90, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Lopez-Valdivia+15', zorder=4)
-plt.scatter(lv_temp[-1], lv_li[-1], s=90, color='Gold', marker='v', linewidth=1.2, edgecolor='k', zorder=4)
-plt.plot([6100, 6100, 5975, 5975, 6100], [2.05, 1.6, 1.4, 1.9, 2.05], linewidth=6.0, c='Plum', label='Ramirez+12', zorder=0)
+plt.figure(figsize=(8, 5))
+plt.scatter(data_array[14:, 1], data_array[14:, 0], edgecolor='k', linewidth=1.2, s=150, color='RoyalBlue', label='A(Li)>1.95', zorder=8)
+plt.scatter(data_array[:14, 1], data_array[:14, 0], edgecolor='k', linewidth=1.2, s=150, marker='v', color='FireBrick', label='A(Li)<1.95', zorder=9)
+
+plt.scatter(ram_temp[:-3], ram_li[:-3], s=90, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Ramirez+12', zorder=6)
+plt.scatter(ram_temp[-3:], ram_li[-3:], s=90, color='Gold', marker='v', linewidth=1.2, edgecolor='k', zorder=6)
+
+plt.scatter(lv_temp[:-1], lv_li[:-1], s=90, color='DarkSlateGray', marker='s', linewidth=1.2, edgecolor='k', label='Lopez-Valdivia+15', zorder=4)
+plt.scatter(lv_temp[-1], lv_li[-1], s=90, color='DarkSlateGray', marker='v', linewidth=1.2, edgecolor='k', zorder=4)
+
+plt.scatter(fu_temp[:13], fu_li[:13], s=90, color='MediumSeaGreen', marker='s', linewidth=1.2, edgecolor='k', label='Fu+18', zorder=5)
+plt.scatter(fu_temp[13:], fu_li[13:], s=90, color='MediumSeaGreen', marker='v', linewidth=1.2, edgecolor='k', zorder=5)
+
+plt.plot([6100, 6100, 5975, 5975, 6100], [2.05, 1.6, 1.4, 1.9, 2.05], linewidth=6.0, c='Plum', label='Li Desert (Ramirez+12)', zorder=0)
 # add typical error bars
-plt.errorbar(6195, 3.2, xerr=57, yerr=0.15, ecolor='k', capsize=3)
-plt.ylim([1.15, 3.45])
-plt.xlim([5750, 6275])
+plt.errorbar(6195, 1.44, xerr=57, yerr=0.15, ecolor='k', capsize=3)
+plt.ylim([1.10, 3.15])
+plt.xlim([5750, 6260])
 plt.xlabel('Temperature (K)', fontsize=14)
 plt.ylabel('A(Li)', fontsize=14)
-plt.legend(loc=2, fontsize=10, frameon=False)
-plt.savefig(directory+'li_vs_temp', format='pdf')
+leg = plt.legend(loc=9, bbox_to_anchor=(0.5, 1.23), fontsize=10, ncol=2)
+leg.get_frame().set_linewidth(1.0)
+leg.get_frame().set_edgecolor('k')
+plt.savefig(directory+'li_vs_temp', format='pdf', bbox_inches='tight', additional_artists=leg)
 plt.show()
 
 
 # now plot the li abundance vs metallicity
+plt.figure(figsize=(8, 5))
 plt.scatter(data_array[14:, 2], data_array[14:, 0], edgecolor='k', linewidth=1.2, s=90, color='RoyalBlue', label='A(Li)>1.95')
 plt.scatter(data_array[:14, 2], data_array[:14, 0], edgecolor='k', linewidth=1.2, s=90, marker='v', color='FireBrick', label='A(Li)<1.95')
-plt.scatter(lv_met[:-1], lv_li[:-1], s=90, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Lopez-Valdivia+2015')
-plt.scatter(lv_met[-1], lv_li[-1], s=90, color='Gold', marker='v', linewidth=1.2, edgecolor='k')
+plt.scatter(ram_met[:-3], ram_li[:-3], s=90, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Ramirez+12', zorder=6)
+plt.scatter(ram_met[-3:], ram_li[-3:], s=90, color='Gold', marker='v', linewidth=1.2, edgecolor='k', zorder=6)
+
+plt.scatter(lv_met[:-1], lv_li[:-1], s=90, color='DarkSlateGray', marker='s', linewidth=1.2, edgecolor='k', label='Lopez-Valdivia+15', zorder=4)
+plt.scatter(lv_met[-1], lv_li[-1], s=90, color='DarkSlateGray', marker='v', linewidth=1.2, edgecolor='k', zorder=4)
+
+plt.scatter(fu_met[:13], fu_li[:13], s=90, color='MediumSeaGreen', marker='s', linewidth=1.2, edgecolor='k', label='Fu+18', zorder=5)
+plt.scatter(fu_met[13:], fu_li[13:], s=90, color='MediumSeaGreen', marker='v', linewidth=1.2, edgecolor='k', zorder=5)
 # typical error
-plt.errorbar(0.343, 3.2, xerr=0.07, yerr=0.15, ecolor='k', capsize=3)
-plt.ylim([1.15, 3.45])
+plt.errorbar(0.343, 1.44, xerr=0.07, yerr=0.15, ecolor='k', capsize=3)
+plt.ylim([1.10, 3.15])
 plt.xlim([0.1750, 0.425])
 plt.xlabel('[Fe/H]', fontsize=14)
 plt.ylabel('A(Li)', fontsize=14)
-plt.legend(loc=2, fontsize=10, frameon=False)
-plt.savefig(directory+'li_vs_metal', format='pdf')
+leg = plt.legend(loc=9, bbox_to_anchor=(0.5, 1.23), fontsize=10, ncol=2)
+leg.get_frame().set_linewidth(1.0)
+leg.get_frame().set_edgecolor('k')
+plt.savefig(directory+'li_vs_metal', format='pdf', bbox_inches='tight', additional_artists=leg)
 
 plt.show()
 
 # now vs gravity
+plt.figure(figsize=(8, 5))
 plt.scatter(data_array[14:, 3], data_array[14:, 0], edgecolor='k', linewidth=1.2, s=90, color='RoyalBlue', label='A(Li)>1.95')
 plt.scatter(data_array[:14, 3], data_array[:14, 0], edgecolor='k', linewidth=1.2, s=90, marker='v', color='FireBrick', label='A(Li)<1.95')
-plt.scatter(lv_grav[:-1], lv_li[:-1], s=90, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Lopez-Valdivia+2015')
-plt.scatter(lv_grav[-1], lv_li[-1], s=90, color='Gold', marker='v', linewidth=1.2, edgecolor='k')
+plt.scatter(ram_grav[:-3], ram_li[:-3], s=90, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Ramirez+12', zorder=6)
+plt.scatter(ram_grav[-3:], ram_li[-3:], s=90, color='Gold', marker='v', linewidth=1.2, edgecolor='k', zorder=6)
 
-plt.ylim([1.15, 3.45])
+plt.scatter(lv_grav[:-1], lv_li[:-1], s=90, color='DarkSlateGray', marker='s', linewidth=1.2, edgecolor='k', label='Lopez-Valdivia+15', zorder=4)
+plt.scatter(lv_grav[-1], lv_li[-1], s=90, color='DarkSlateGray', marker='v', linewidth=1.2, edgecolor='k', zorder=4)
+
+plt.scatter(fu_grav[:13], fu_li[:13], s=90, color='MediumSeaGreen', marker='s', linewidth=1.2, edgecolor='k', label='Fu+18', zorder=5)
+plt.scatter(fu_grav[13:], fu_li[13:], s=90, color='MediumSeaGreen', marker='v', linewidth=1.2, edgecolor='k', zorder=5)
+
+plt.ylim([1.10, 3.15])
 plt.xlim([3.9, 4.65])
 plt.xlabel('log(g)', fontsize=14)
 plt.ylabel('A(Li)', fontsize=14)
-plt.legend(loc=2, fontsize=10, frameon=False)
-plt.savefig(directory+'li_vs_grav', format='pdf')
+leg = plt.legend(loc=9, bbox_to_anchor=(0.5, 1.23), fontsize=10, ncol=2)
+leg.get_frame().set_linewidth(1.0)
+leg.get_frame().set_edgecolor('k')
+plt.savefig(directory+'li_vs_grav', format='pdf', bbox_inches='tight', additional_artists=leg)
 
 plt.show()
 
