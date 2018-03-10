@@ -59,6 +59,7 @@ for i in range(nbins):
     plt.scatter(alldata[low_l[i], 2], alldata[low_l[i], 0], c=colors[i], linewidth=1.2, s=120, edgecolor='k', marker='v', zorder=3)
     plt.scatter(alldata[low_l[i], 2], alldata[low_l[i], 0], c='None', linewidth=2.2, s=240, edgecolor='k', marker='v', zorder=2)
 
+# would be awesome to plot some isochrones on this plot to see what they should look like (reddening would not fix the trends)
 
 plt.legend(loc=2, fontsize=10, frameon=False)
 plt.xlabel('Temperature (K)', fontsize=14)
@@ -68,7 +69,7 @@ plt.ylim([1.8, 4.7])
 plt.gca().invert_xaxis()
 plt.gca().invert_yaxis()
 
-plt.savefig(directory+'smr_hr_diagram', format='pdf')
+plt.savefig(directory+'smr_hr_diagram', format='pdf', bbox_inches='tight')
 plt.show()
 
 
