@@ -54,9 +54,13 @@ age35_met29[:, 5] = 10**age35_met29[:, 5]
 age35_met35 = np.genfromtxt(directory+iso_subdir+'age35_met35.dat', skip_header=8)
 age35_met35[:, 5] = 10**age35_met35[:, 5]
 
+age3_met29 = np.genfromtxt(directory+iso_subdir+'age3_met29.dat', skip_header=8)
+age3_met29[:, 5] = 10**age3_met29[:, 5]
+
 # import a grid of 3.5 gyr isochrones from Z=0.258 to 0.034 in steps of dZ = 0.0001
 grid35 = np.genfromtxt(directory+iso_subdir+'age35_densegrid.dat')
 grid4 = np.genfromtxt(directory+iso_subdir+'age4_densegrid.dat')
+grid3 = np.genfromtxt(directory+iso_subdir+'age3_densegrid.dat')
 
 
 alldata = np.genfromtxt(input_data, skip_header=1, delimiter=',')
@@ -97,16 +101,16 @@ for i in range(nbins):
     print(current_metal_leftedge+bin_size)
 
 # now actually do the plotting
-plt.figure(figsize=(8, 4))
+plt.figure(figsize=(8, 5))
 
 # low to high metallicity
 colors = ['RoyalBlue', 'DarkOrange', 'FireBrick']
 labels = ['0.200 < [Fe/H] < 0.262', '0.262 < [Fe/H] < 0.323', '0.323 < [Fe/H] < 0.385']
 
 for i in range(nbins):
-    plt.scatter(alldata[high_l[i], 2], alldata[high_l[i], 0], c=colors[i], linewidth=1.2, s=120, edgecolor='k', marker='o', label=labels[i], zorder=5)
+    plt.scatter(alldata[high_l[i], 2], alldata[high_l[i], 0], c=colors[i], linewidth=1.2, s=120, edgecolor='k', marker='o', label=labels[i], zorder=6)
     plt.scatter(alldata[low_l[i], 2], alldata[low_l[i], 0], c=colors[i], linewidth=1.2, s=120, edgecolor='k', marker='v', zorder=7)
-    plt.scatter(alldata[low_l[i], 2], alldata[low_l[i], 0], c='None', linewidth=2.2, s=240, edgecolor='k', marker='v', zorder=6)
+    plt.scatter(alldata[low_l[i], 2], alldata[low_l[i], 0], c='None', linewidth=2.2, s=240, edgecolor='k', marker='v', zorder=8)
 
 # would be awesome to plot some isochrones on this plot to see what they should look like (reddening would not fix the trends)
 # so actually plot them then
@@ -117,6 +121,9 @@ plt.plot(age1_met29[:-30, 5], age1_met29[:-30, 25], c='FireBrick', linewidth=3.0
 # covered by changing metallicity. there's no easy way to fill between so just make a bunch of isochrones of metallicity
 # and adjust linewidth to create illusion of filled between.
 
+plt.plot(age3_met29[:-1, 5], age3_met29[:-1, 25], c='DarkSlateGray', label='3 Gyr', zorder=0, linewidth=3)
+
+
 # these are just for labeling purposes
 plt.plot(age35_met29[:-1, 5], age35_met29[:-1, 25], c='Plum', label='3.5 Gyr', zorder=0, linewidth=3)
 #plt.plot(age35_met23[:-1, 5], age35_met23[:-1, 25], c='DarkOrange')
@@ -126,8 +133,21 @@ plt.plot(age4_met29[:-1, 5], age4_met29[:-1, 25], c='MediumAquaMarine', label='4
 #plt.plot(age55_met23[:-1, 5], age55_met23[:-1, 25], c='RoyalBlue')
 #plt.plot(age7_met23[:-1, 5], age7_met23[:-1, 25], c='RoyalBlue')
 
-# loop over the imported grid of age = 3.5 gyr isochrones - this is real nasty code
+# loop over the imported grid of age = 3 gyr isochrones - this is real nasty code
 metal_grid = np.arange(0.0258, 0.034, 0.0001)
+for i in range(np.size(np.arange(0.0258, 0.034, 0.0001))):
+    current_metallicity = 0.0258+i*0.0001
+    temp_temp = []
+    temp_mv = []
+    for j in range(np.size(grid3[:, 5])):
+        if grid3[j, 0] == current_metallicity:
+            temp_temp.append(grid3[j, 5])
+            temp_mv.append(grid3[j, 25])
+    temp_temp = np.array(temp_temp)
+    temp_temp = 10**temp_temp
+    plt.plot(temp_temp[:-1], temp_mv[:-1], color='DarkSlateGray', linewidth=3.5, zorder=2)
+
+# loop over the imported grid of age = 3.5 gyr isochrones
 for i in range(np.size(np.arange(0.0258, 0.034, 0.0001))):
     current_metallicity = 0.0258+i*0.0001
     temp_temp = []
@@ -138,7 +158,7 @@ for i in range(np.size(np.arange(0.0258, 0.034, 0.0001))):
             temp_mv.append(grid35[j, 25])
     temp_temp = np.array(temp_temp)
     temp_temp = 10**temp_temp
-    plt.plot(temp_temp[:-1], temp_mv[:-1], color='Plum', linewidth=3, zorder=2)
+    plt.plot(temp_temp[:-1], temp_mv[:-1], color='Plum', linewidth=3, zorder=3)
 
 for i in range(np.size(np.arange(0.0258, 0.034, 0.0001))):
     current_metallicity = 0.0258+i*0.0001
@@ -150,10 +170,14 @@ for i in range(np.size(np.arange(0.0258, 0.034, 0.0001))):
             temp_mv.append(grid4[j, 25])
     temp_temp = np.array(temp_temp)
     temp_temp = 10**temp_temp
-    plt.plot(temp_temp[:-1], temp_mv[:-1], color='MediumAquaMarine', linewidth=3.3, zorder=3)
+    plt.plot(temp_temp[:-1], temp_mv[:-1], color='MediumAquaMarine', linewidth=3.3, zorder=4)
 
 # now work on controlling the figure layout
-plt.legend(loc=2, fontsize=10, ncol=2)
+leg = plt.legend(loc=2, fontsize=10, ncol=2)
+leg.get_frame().set_edgecolor('k')
+leg.get_frame().set_linewidth(1.5)
+leg.get_frame().set_facecolor('White')
+leg.get_frame().set_alpha(1.0)
 plt.xlabel('Temperature (K)', fontsize=14)
 plt.ylabel(r'$M_V$ (mag)', fontsize=14)
 
@@ -161,11 +185,14 @@ plt.ylabel(r'$M_V$ (mag)', fontsize=14)
 # 4 gyr 1.27 mass first
 #plt.scatter(5906, 3.297, c='k', marker='*', s=200, zorder=9)
 
+# 3 gyr 1.34 mass
+plt.scatter(6027, 3.037, c='DarkSlateGray', marker='*', edgecolor='k', linewidth=1.2, s=350, zorder=5)
+
 # 4 gyr 1.34 mass next
-plt.scatter(5821, 3.018, c='Plum', marker='*', edgecolor='k', s=350, linewidth=1.2, zorder=4)
+plt.scatter(5821, 3.018, c='Plum', marker='*', edgecolor='k', s=350, linewidth=1.2, zorder=5)
 
 # now 3.5 gyr stuff
-plt.scatter(5988, 3.083, c='MediumAquaMarine', marker='*', edgecolor='k', linewidth=1.2, s=350, zorder=4)
+plt.scatter(5988, 3.083, c='MediumAquaMarine', marker='*', edgecolor='k', linewidth=1.2, s=350, zorder=5)
 #plt.scatter(6031, 3.329, c='k', marker='*', s=200, zorder=9)
 
 # these are limits so I can see the isochrone better
@@ -178,7 +205,7 @@ plt.scatter(5988, 3.083, c='MediumAquaMarine', marker='*', edgecolor='k', linewi
 
 # limits for plot with isochrones added
 plt.xlim([5675, 6300])
-plt.ylim([1.50, 4.75])
+plt.ylim([1.20, 4.75])
 
 # invert the axes
 plt.gca().invert_xaxis()
