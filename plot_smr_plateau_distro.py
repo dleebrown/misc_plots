@@ -23,7 +23,7 @@ print(np.std(data[:, 2]))
 
 ax1.scatter(data[:, 3], data[:, 2], color='FireBrick', s=120, zorder=4)
 ax1.plot([5500, 6500], [2.55, 2.55], linestyle='--', linewidth=4.0, color='DarkSlateGray', zorder=1)
-ax1.plot([5500, 6500], [2.55, 2.55], linestyle='-', color='LightBlue', linewidth=82, zorder=0)
+ax1.plot([5500, 6500], [2.55, 2.55], linestyle='-', color='LightBlue', linewidth=110, zorder=0)
 ax1.errorbar(6160, 2.15, xerr=57, yerr=0.15, ecolor='k', capsize=3, zorder=3)
 
 n, bins, patches = ax2.hist(data[:, 2], bins=nbins, color='DarkSlateGray', edgecolor='White', linewidth=3.5)
