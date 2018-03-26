@@ -181,18 +181,16 @@ leg.get_frame().set_alpha(1.0)
 plt.xlabel('Temperature (K)', fontsize=14)
 plt.ylabel(r'$M_V$ (mag)', fontsize=14)
 
-# now add points corresponding to the cool side dip mass for the hyades (+0.15) and 6253 (+0.4) for each age used
-# 4 gyr 1.27 mass first
-#plt.scatter(5906, 3.297, c='k', marker='*', s=200, zorder=9)
+# now add points corresponding to the cool side dip mass for stars of [Fe/H] = +.29 and mass 1.31 (estimated from C12)
 
-# 3 gyr 1.34 mass
-plt.scatter(6027, 3.037, c='DarkSlateGray', marker='*', edgecolor='k', linewidth=1.2, s=350, zorder=5)
+# 3 gyr 1.31 mass
+plt.scatter(6133, 3.54, c='DarkSlateGray', marker='*', edgecolor='k', linewidth=1.2, s=500, zorder=5)
 
-# 4 gyr 1.34 mass next
-plt.scatter(5821, 3.018, c='Plum', marker='*', edgecolor='k', s=350, linewidth=1.2, zorder=5)
+# 3.5 gyr 1.31 mass next
+plt.scatter(6010, 3.52, c='Plum', marker='*', edgecolor='k', s=500, linewidth=1.2, zorder=5)
 
-# now 3.5 gyr stuff
-plt.scatter(5988, 3.083, c='MediumAquaMarine', marker='*', edgecolor='k', linewidth=1.2, s=350, zorder=5)
+# now 4.0 gyr stuff
+plt.scatter(5865, 3.52, c='MediumAquaMarine', marker='*', edgecolor='k', linewidth=1.2, s=500, zorder=5)
 #plt.scatter(6031, 3.329, c='k', marker='*', s=200, zorder=9)
 
 # these are limits so I can see the isochrone better
