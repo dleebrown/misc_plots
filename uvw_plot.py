@@ -19,11 +19,11 @@ mrdata = np.genfromtxt(input_mrdata, delimiter=',', skip_header=1)
 mr_energy = np.sqrt(mrdata[:, 5]**2+mrdata[:, 7]**2)
 mr_v = mrdata[:, 6]
 
-mr_energy_lp = mr_energy[:10]
-mr_energy_lr = mr_energy[10:]
+mr_energy_lp = mr_energy[:9]
+mr_energy_lr = mr_energy[9:]
 
-mr_v_lp = mr_v[:10]
-mr_v_lr = mr_v[10:]
+mr_v_lp = mr_v[:9]
+mr_v_lr = mr_v[9:]
 
 mp_energy = np.sqrt(mpdata[:, 5]**2+mpdata[:, 7]**2)
 mp_v = mpdata[:, 6]
@@ -57,4 +57,26 @@ plt.savefig(directory+'toomre_smr', format='pdf')
 
 plt.show()
 
+# now make a UV plot
 
+fig2, splot2 = plt.subplots(1, figsize=(6, 5))
+
+splot2.scatter(mp_v, mpdata[:, 5], color='RoyalBlue', edgecolor='k', linewidth=1.5, s=120, label='[Fe/H]<+0.20')
+splot2.scatter(mr_v_lp, mrdata[:9, 5], color='None', marker='s', edgecolor='FireBrick', linewidth=1.5, s=100, label='[Fe/H]>+0.20, A(Li)<1.95')
+splot2.scatter(mr_v_lr, mrdata[9:, 5], color='FireBrick', marker='s', edgecolor='k', linewidth=1.5, s=100, label='[Fe/H]>+0.20, A(Li)>1.95')
+
+plt.xlabel('V (km/s)', fontsize=12)
+plt.ylabel('U (km/s)', fontsize=12)
+
+leg = plt.legend(loc=1)
+leg.get_frame().set_edgecolor('k')
+leg.get_frame().set_linewidth(1.5)
+leg.get_frame().set_facecolor('White')
+leg.get_frame().set_alpha(1.0)
+
+plt.xlim([-79, 9])
+plt.ylim([-59, 99])
+
+plt.savefig(directory+'uvdiagram_smr', format='pdf')
+
+plt.show()

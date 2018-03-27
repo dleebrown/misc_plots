@@ -14,7 +14,7 @@ data = np.genfromtxt(input_data, delimiter=',', skip_header=1)
 # set the bin width to be approximately the uncertainty in A(Li)
 nbins = 5
 
-f, ((ax1, ax2)) = plt.subplots(1, 2, figsize=(10, 5))
+f, ((ax1, ax2)) = plt.subplots(1, 2, figsize=(10, 4))
 f.subplots_adjust(wspace=0.3)
 
 print(np.mean(data[:, 2]))

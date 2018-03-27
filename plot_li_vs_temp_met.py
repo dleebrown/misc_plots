@@ -20,7 +20,6 @@ lv_data = np.genfromtxt(lv_input, delimiter=',', skip_header=1)
 fu_data = np.genfromtxt(fu_input, delimiter=',', skip_header=1)
 ram_data = np.genfromtxt(ram_input, delimiter=',', skip_header=1)
 
-
 lv_temp = lv_data[:, 1]
 lv_li = lv_data[:, 7]
 lv_grav = lv_data[:, 3]
@@ -79,11 +78,12 @@ plt.legend(loc=2, fontsize=14)
 plt.savefig(directory+'li_distro', format='pdf')
 plt.show()
 
+print(data_array[13:, 0])
 # now plot the li abundance vs surface temperature by color code
 # first plot the lithium desert from ramirez+2012
 plt.figure(figsize=(8, 5))
-plt.scatter(data_array[14:, 1], data_array[14:, 0], edgecolor='k', linewidth=1.2, s=150, color='RoyalBlue', label='A(Li)>1.95', zorder=8)
-plt.scatter(data_array[:14, 1], data_array[:14, 0], edgecolor='k', linewidth=1.2, s=150, marker='v', color='FireBrick', label='A(Li)<1.95', zorder=9)
+plt.scatter(data_array[13:, 1], data_array[13:, 0], edgecolor='k', linewidth=1.2, s=150, color='RoyalBlue', label='A(Li)>1.95', zorder=8)
+plt.scatter(data_array[:13, 1], data_array[:13, 0], edgecolor='k', linewidth=1.2, s=150, marker='v', color='FireBrick', label='A(Li)<1.95', zorder=9)
 
 plt.scatter(ram_temp[:-3], ram_li[:-3], s=90, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Ramirez+12', zorder=6)
 plt.scatter(ram_temp[-3:], ram_li[-3:], s=90, color='Gold', marker='v', linewidth=1.2, edgecolor='k', zorder=6)
@@ -110,8 +110,8 @@ plt.show()
 
 # now plot the li abundance vs metallicity
 plt.figure(figsize=(8, 5))
-plt.scatter(data_array[14:, 2], data_array[14:, 0], edgecolor='k', linewidth=1.2, s=90, color='RoyalBlue', label='A(Li)>1.95')
-plt.scatter(data_array[:14, 2], data_array[:14, 0], edgecolor='k', linewidth=1.2, s=90, marker='v', color='FireBrick', label='A(Li)<1.95')
+plt.scatter(data_array[13:, 2], data_array[13:, 0], edgecolor='k', linewidth=1.2, s=90, color='RoyalBlue', label='A(Li)>1.95')
+plt.scatter(data_array[:13, 2], data_array[:13, 0], edgecolor='k', linewidth=1.2, s=90, marker='v', color='FireBrick', label='A(Li)<1.95')
 plt.scatter(ram_met[:-3], ram_li[:-3], s=90, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Ramirez+12', zorder=6)
 plt.scatter(ram_met[-3:], ram_li[-3:], s=90, color='Gold', marker='v', linewidth=1.2, edgecolor='k', zorder=6)
 
@@ -135,8 +135,8 @@ plt.show()
 
 # now vs gravity
 plt.figure(figsize=(8, 5))
-plt.scatter(data_array[14:, 3], data_array[14:, 0], edgecolor='k', linewidth=1.2, s=90, color='RoyalBlue', label='A(Li)>1.95')
-plt.scatter(data_array[:14, 3], data_array[:14, 0], edgecolor='k', linewidth=1.2, s=90, marker='v', color='FireBrick', label='A(Li)<1.95')
+plt.scatter(data_array[13:, 3], data_array[13:, 0], edgecolor='k', linewidth=1.2, s=90, color='RoyalBlue', label='A(Li)>1.95')
+plt.scatter(data_array[:13, 3], data_array[:13, 0], edgecolor='k', linewidth=1.2, s=90, marker='v', color='FireBrick', label='A(Li)<1.95')
 plt.scatter(ram_grav[:-3], ram_li[:-3], s=90, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Ramirez+12', zorder=6)
 plt.scatter(ram_grav[-3:], ram_li[-3:], s=90, color='Gold', marker='v', linewidth=1.2, edgecolor='k', zorder=6)
 
@@ -163,8 +163,8 @@ splot = fig.add_subplot(111, projection='3d')
 
 # if i want to do color coded stuff then I need to redo the stuff I did to select data at the beginning
 # and keep temps and metals attached to their Li measurements.
-splot.scatter(data_array[14:, 1], data_array[14:, 2], data_array[14:, 0], linewidth=1.2, edgecolor='k', color='RoyalBlue', s=120)
-splot.scatter(data_array[:14, 1], data_array[:14, 2], data_array[:14, 0], marker='v', linewidth=1.2, edgecolor='k', color='FireBrick', s=120)
+splot.scatter(data_array[13:, 1], data_array[13:, 2], data_array[13:, 0], linewidth=1.2, edgecolor='k', color='RoyalBlue', s=120)
+splot.scatter(data_array[:13, 1], data_array[:13, 2], data_array[:13, 0], marker='v', linewidth=1.2, edgecolor='k', color='FireBrick', s=120)
 splot.scatter(lv_temp[:-1], lv_met[:-1], lv_li[:-1], s=120, color='Gold', marker='s', linewidth=1.2, edgecolor='k', label='Lopez-Valdivia+2015')
 splot.scatter(lv_temp[-1], lv_met[-1], lv_li[-1], s=120, color='Gold', marker='v', linewidth=1.2, edgecolor='k')
 
