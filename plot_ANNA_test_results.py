@@ -41,7 +41,7 @@ gravplot.scatter(true_grav, delta_grav, s=15, color='RoyalBlue', zorder=1)
 gravplot.set_xlim([3.0, 4.5])
 gravplot.set_ylim([-0.5, 0.5])
 gravplot.set_ylabel(r'$\Delta log(g)$ (dex)', fontsize=16)
-gravplot.set_xlabel(r'[Fe/H] (dex)', fontsize=16)
+gravplot.set_xlabel(r'$log(g)$ (dex)', fontsize=16)
 plt.tick_params(axis='both', which='major', labelsize=14)
 
 
